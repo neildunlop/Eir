@@ -1,7 +1,7 @@
 package com.datinko.eir.domain
 
 import akka.persistence.PersistentActor
-import com.datinko.eir.commands.{TotalStakeIs, VoidBet, PlaceBet}
+import com.datinko.eir.commands.{PrintTotalStake, TotalStakeIs, VoidBet, PlaceBet}
 import com.datinko.eir.events.{Evt, TotalStakeChangedBy}
 import com.datinko.eir.state.MatchState
 import com.typesafe.scalalogging.LazyLogging
@@ -43,6 +43,7 @@ class TennisMatch extends PersistentActor with LazyLogging {
         //(not sure about sending a command back tho?! - thought CQRS says it should be an event?)
         sender() ! TotalStakeIs(state.totalStake)
       }
+    case PrintTotalStake() => logger.debug("Got asked to Print Total Stake")
     case _ => logger.debug("UNKNOWN COMMAND")
   }
 
@@ -54,7 +55,7 @@ class TennisMatch extends PersistentActor with LazyLogging {
   }
 
 
-  override def persistenceId = "my-persistent-unique-actor-id-1"
+  override def persistenceId = "tennismatch-actor-id-1"
 
 
 }
